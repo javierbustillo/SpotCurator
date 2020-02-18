@@ -5,8 +5,9 @@ import requests
 from SpotifyAPI import SpotifyAPI
 
 
+
 def get_urls(track_ids):
-    print('Preparing urls')
+    print('Preparing urls...')
 
     url = '/audio-features/?ids='
     urls = []
@@ -31,7 +32,6 @@ def append_features(features, urls):
     for url in urls:
         track_features = spotify_api.request_data(url, token=token)
         audio_features = track_features['audio_features']
-
         for audio_feature in audio_features:
             if audio_feature is None:
                 continue
@@ -40,10 +40,19 @@ def append_features(features, urls):
             audio_feature.pop('uri')
             audio_feature.pop('track_href')
             audio_feature.pop('analysis_url')
+            audio_feature.pop('duration_ms')
+            audio_feature.pop('time_signature')
+            audio_feature.pop('energy')
+            audio_feature.pop('liveness')
+
+
             track_feature_list = []
-            for feat in audio_feature.values():
+            for key, feat in audio_feature.items():
+                if key == key_t:
+                    histogram_values.append(feat)
                 track_feature_list.append(feat)
             features.append(track_feature_list)
+
 
 spotify_api = SpotifyAPI()
 token = ''
@@ -51,6 +60,7 @@ print('Getting Liked songs...')
 liked_songs = spotify_api.get_liked_songs(token)
 track_ids = []
 next = liked_songs['next']
+
 while next != 'null':
     for track in liked_songs['items']:
         track_id = track['track']['id']
@@ -62,9 +72,21 @@ while next != 'null':
     liked_songs = json.loads(response.text)
     next = liked_songs['next']
 
+playlists_ids = []
+with open('good_playlist_urls.txt') as file:
+    for line in file.readlines():
+        playlists_ids.append(line)
+
+print('Getting good playlists...')
+for playlist_id in playlists_ids:
+    tracks = spotify_api.get_playlist_tracks(token, playlist_id[:-1])['items']
+    for track in tracks:
+        track_id = track['track']['id']
+        track_ids.append(track_id)
+
 features = []
 urls = get_urls(track_ids)
-append_features(features, urls)
+append_features(features, urls, token)
 with open('features.csv', 'w') as csv:
     for feature in features:
         for val in feature:
@@ -74,11 +96,11 @@ with open('features.csv', 'w') as csv:
 
 playlists_ids = []
 track_ids = []
-with open('playlist_urls.txt') as file:
+with open('bad_playlist_urls.txt') as file:
     for line in file.readlines():
         playlists_ids.append(line)
 
-print('Getting playlists')
+print('Getting bad playlists...')
 for playlist_id in playlists_ids:
     tracks = spotify_api.get_playlist_tracks(token, playlist_id[:-1])['items']
     for track in tracks:
@@ -87,7 +109,7 @@ for playlist_id in playlists_ids:
 
 features = []
 urls = get_urls(track_ids)
-append_features(features, urls)
+append_features(features, urls, token)
 
 with open('features.csv', 'a') as csv:
     for feature in features:
@@ -96,3 +118,4 @@ with open('features.csv', 'a') as csv:
         csv.write('dislike')
         csv.write('\n')
 
+print('Done!')
