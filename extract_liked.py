@@ -26,8 +26,8 @@ def get_urls(track_ids):
     return urls
 
 
-def append_features(features, urls):
-    print('Extracting features')
+def append_features(features, urls, token):
+    print('Extracting features...')
 
     for url in urls:
         track_features = spotify_api.request_data(url, token=token)
@@ -48,8 +48,6 @@ def append_features(features, urls):
 
             track_feature_list = []
             for key, feat in audio_feature.items():
-                if key == key_t:
-                    histogram_values.append(feat)
                 track_feature_list.append(feat)
             features.append(track_feature_list)
 
@@ -74,12 +72,13 @@ while next != 'null':
 
 playlists_ids = []
 with open('good_playlist_urls.txt') as file:
-    for line in file.readlines():
+    data = file.read().splitlines()
+    for line in data:
         playlists_ids.append(line)
 
 print('Getting good playlists...')
 for playlist_id in playlists_ids:
-    tracks = spotify_api.get_playlist_tracks(token, playlist_id[:-1])['items']
+    tracks = spotify_api.get_playlist_tracks(token, playlist_id)['items']
     for track in tracks:
         track_id = track['track']['id']
         track_ids.append(track_id)
@@ -97,12 +96,13 @@ with open('features.csv', 'w') as csv:
 playlists_ids = []
 track_ids = []
 with open('bad_playlist_urls.txt') as file:
-    for line in file.readlines():
+    data = file.read().splitlines()
+    for line in data:
         playlists_ids.append(line)
 
 print('Getting bad playlists...')
 for playlist_id in playlists_ids:
-    tracks = spotify_api.get_playlist_tracks(token, playlist_id[:-1])['items']
+    tracks = spotify_api.get_playlist_tracks(token, playlist_id)['items']
     for track in tracks:
         track_id = track['track']['id']
         track_ids.append(track_id)
