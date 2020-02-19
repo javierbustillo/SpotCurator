@@ -13,7 +13,7 @@ So first you need to scrape spotify for the songs you like
 Once the token is generated update the correct line with the correct token in **extract_liked.py** and **recommender.py**:
 `token = ''`
 
-Run **extract_liked.py** firs
+Run **extract_liked.py** first
 Then run **train.py**
 Then run **recommender.py** and when asked for track or playlist send the SPOTIFY URI. 
 
