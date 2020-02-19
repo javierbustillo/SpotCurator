@@ -1,4 +1,4 @@
-# SpotifyRecommender
+# SpotRecommend
 Your own personal music curator
 
 
