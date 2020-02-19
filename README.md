@@ -8,7 +8,7 @@ These simple scripts use machine learning to, well, learn what kind of songs you
 
 So first you need to scrape spotify for the songs you like
 
-[Here](https://developer.spotify.com/console/get-current-user-contains-saved-tracks/) you can find a way to generate the token necesarry to scrape your liked songs from spotify. If you feel like that's not enough then you can create a text file called **good_playlist_urls.txt** and fill it with the ids of playlists you like. Make sure to generate the correct token if using private playlists.
+[Here](https://developer.spotify.com/console/get-current-user-contains-saved-tracks/) you can find a way to generate the token necessary to scrape your liked songs from spotify. If you feel like that's not enough then you can create a text file called **good_playlist_urls.txt** and fill it with the ids of playlists you like. Make sure to generate the correct token if using private playlists.
 
 Once the token is generated update the correct line with the correct token in **extract_liked.py** and **recommender.py**:
 `token = ''`
