@@ -51,7 +51,7 @@ def append_features(features, urls, token):
 
 
 spotify_api = SpotifyAPI()
-token = 'BQC3dRvY1fUE-TVMAWe_SiV1oA58pK70rfEv9QanozwhNjnoJBSiEuXdhNbdCMA6f3EhQqS2e-4eLnirQUydyVc9YPqHRIxqnR3JlFmMVgsLM5keYMRbhRBFpZYENzXsvm1SDXLsOr8bVQQ-RA9lcLOTiAhaMHXO4krn34jS2LoasbUnMV_u1NBhe8PDctm9hTldrhiZrzWW9slDJr7zKEOqEtgNucDle0t3zIh_yROoLw'
+token = ''
 recommender = load('recommender.joblib')
 
 print('1. Playlist\n2. Track')
