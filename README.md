@@ -1,4 +1,4 @@
-# SpotRecommend
+# SpotCurator
 Your own personal music curator
 
 
